@@ -12,4 +12,15 @@ SVAIA es una aplicación web desarrollada en Flask que permite a los usuarios an
 - Mostrar si un proyecto cumple o no con los criterios.
 - Login, gestión de usuarios y roles (admin/user normal).
 
+---
 
+# Inicialización de la base de datos
+
+La base de datos se inicializa automáticamente con datos predefinidos al levantar el contenedor MariaDB por primera vez. Se cargan usuarios y proyectos de ejemplo.
+
+# Levantar la web:
+
+Clonar el repositorio, y levantar los servicios (docker-compose up). Asegúrate de tener el archivo dump.sql en el directorio raíz del proyecto.
+- Web: http://localhost:5004/svaia (credenciales admin, admin / user, user)
+- API: http://localhost:5007
+- phpMyAdmin: http://localhost:8080
