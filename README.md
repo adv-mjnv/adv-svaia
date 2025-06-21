@@ -1,7 +1,7 @@
 # adv-svaia
 # Sobre SVAIA
 
-SVAIA es una aplicación web desarrollada en Flask que permite a los usuarios analizar las dependencias de sus proyectos para detectar vulnerabilidades conocidas. Utiliza inteligencia artificial y la API pública de OSV.dev para evaluar la seguridad del software y aplicar criterios de aceptabilidad personalizados.
+SVAIA es una aplicación web desarrollada en Flask que permite a los usuarios analizar las dependencias de sus proyectos para detectar vulnerabilidades conocidas. Utiliza inteligencia artificial y la API pública de OSV.dev para evaluar la seguridad del software y aplicar criterios de aceptabilidad personalizados. Usa una API REST para gestionar las consultas a la base de datos.
 
 ---
 
