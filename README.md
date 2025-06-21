@@ -20,7 +20,7 @@ La base de datos se inicializa automáticamente con datos predefinidos al levant
 
 # Levantar la web:
 
-Clonar el repositorio, y levantar los servicios (docker-compose up). Asegúrate de tener el archivo dump.sql en el directorio raíz del proyecto.
+Clonar el repositorio (git clone https://github.com/adv-mjnv/adv-svaia.git), acceder a la carpeta del proyecto y levantar los servicios (docker-compose up). Asegúrate de tener el archivo dump.sql en el directorio raiz.
 - Web: http://localhost:5004/svaia (credenciales admin, admin / user, user)
 - API: http://localhost:5007
 - phpMyAdmin: http://localhost:8080
