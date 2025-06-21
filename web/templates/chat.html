@@ -1,0 +1,251 @@
+{%extends "layout.html" %}
+{% block head %} 
+  {{super()}}
+{% endblock%}
+
+
+{% block nav %}
+{{super()}}
+
+  <style>
+    body {
+        background: linear-gradient(to bottom right, #ffffff, #6c757d);
+        margin: 0;
+        padding: 0;
+    }
+    .trash-btn {
+        display: none; /* Invisible */
+    }
+
+    tr:hover .trash-btn {
+        display: inline-block; /* Visible cuando pasa el ratón sobre la fila */
+    }
+  </style>
+
+  <!--Inicio/ Chat-->
+  <ol class="breadcrumb" style="padding-left: 40px">
+    <li class="breadcrumb-item"><a href="svaia">Inicio</a></li>
+    <li class="breadcrumb-item active">Chat</li>
+  </ol>
+
+  {%endblock%}
+
+  {% block warning %} <!--quitamos el warning-->
+  {%endblock%}
+
+  {%block content%}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }} alert-dismissible m-3">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <p class="mb-0">{{ message }}</p>
+      </div>
+    {% endfor %}
+  {% endif %}
+  {% endwith %}
+    <!--Proyectos y Chat-->
+    <div class="row d-flex flex-row mx-5">
+        <!-- Sección de Proyectos -->
+        <!-- Sección de Proyectos -->
+        <div class="col-lg-3 align-items-center mt-3">
+          <div class="d-flex flex-column align-items-end" style="width: 100%; border-radius: 10px; border: 2px solid #d3d3d3; overflow: hidden; padding: 10px; background: white;">
+            <!--Boton de agregar "+"-->
+            <a href="/proyecto_nuevo"> <!--al apretar el boton +, lleva al url de la pagina de crear un nuevo proyecto (ruta definida en app.py)-->
+            <button type="button" class="btn btn-success" style="width: 40; height: 40; padding: 3px" fdprocessedid="f9bkye">
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+              </svg>
+            </button>
+          </a>
+
+            <!--Tabla proyectos en pantalla completa-->
+            <table class="table table-hover d-none d-lg-table" style="border: 1px solid #d3d3d3; border-radius: 10px; overflow: hidden; margin-top: 10px; border-collapse: separate; border-spacing: 0;">
+              {% for proyecto in proyectos %} <!--iteramos sobre los proyectos recibidos y creamos una fila de la tabla con el nombre de cada uno-->
+              <tr class="fila-proyecto " data-href="/proyecto/{{proyecto.id}}" style="cursor: pointer;">
+                <!--para cada fila, guardamos en dataset.href el link de visualizacion con el id del proyecto, en el script tenemos un event listener que te lleva ahí con un click en la fila-->                
+                <th scope="row" style="border-bottom: 1px solid #d3d3d3;">{{proyecto.nombre}}</th> <!--escribimos el nombre del proyecto actual sobre el que iteramos en la fila-->
+                <th class="text-end">
+                  <!-- Botón eliminar con icono -->
+                   <a href="/proyecto/eliminar/{{proyecto.id}}"> <!--indicamos que al apretar el boton, se elimine el proyecto-->
+                  <button type="button" class="btn btn-danger btn-sm trash-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                      <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                      <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                    </svg>
+                  </button>
+                  </a>
+                </th>
+              </tr>
+              {% endfor %}
+            </table>  
+            
+            <!--Tabla proyctos en pantalla pequeña-->
+            <div class="d-lg-none mt-3 w-100">
+              <label for="exampleSelect1" class="form-label"></label>
+              <select class="form-select" id="exampleSelect1">
+                <option selected disabled value="">Selecciona un proyecto</option>
+                {% for proyecto in proyectos %}
+                <!--para la tabla pequeña volvemos a iterar sobre la lista de proyectos recibida desde app.py y creamos una opcion para cada uno con su nombre-->
+                  <option value="/proyecto/{{proyecto.id}}">{{proyecto.nombre}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+      </div>
+
+        <!-- Sección de Chat -->
+        <div class="col-lg-9 mt-3" id="chat"> 
+          <div class="d-flex flex-column align-items-center" style="overflow-y: auto; width: 100%; height: auto; min-height: 600px; max-height: 600px; border: 2px solid #d3d3d3; border-radius: 10px; padding-top:10px; background: white;">
+              <!--Chat-->
+              <div id = "contenedor-mensajes" class="d-flex flex-column align-items-center" style="overflow-y: auto; max-height: 600px; width: 100%; height: auto; padding-top:10px; background: white;">
+              </div>
+              
+              <!--botón de enviar-->
+                <div class="input-group p-2 bg-secondary bg-opacity-25 mt-auto">
+                  <input type="text" class="form-control " placeholder="Escribe tu mensaje..." aria-label="Escribe tu mensaje..." aria-describedby="button-addon2" id="mensajeInput">
+                  <button class="btn btn-primary" type="button" id="button-addon2">Enviar</button>
+                </div> 
+          </div>
+        </div>
+    </div>
+    
+
+
+<!--SCRIPTS-->
+<script type="text/javascript">
+  let xhr = new XMLHttpRequest();
+  // Obtener el contenedor de los mensajes del chat
+  const chatContainer = document.getElementById("contenedor-mensajes");
+
+  function bienvenida(){
+  // Creamos el mensaje de bienvenida
+  const mensajeBienvenida = document.createElement("div");
+      mensajeBienvenida.classList.add("d-flex", "flex-row", "justify-content-start", "w-100", "align-items-center", "mb-3", "mensaje-robot");
+      mensajeBienvenida.innerHTML = `
+        <div class="col-1 d-flex justify-content-center"> 
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-robot" viewBox="0 0 16 16">
+            <path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5M3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.6 26.6 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.93.93 0 0 1-.765.935c-.845.147-2.34.346-4.235.346s-3.39-.2-4.235-.346A.93.93 0 0 1 3 9.219zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a25 25 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.71a.25.25 0 0 0 .404.062l.932-.97a25 25 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.98.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.7a.25.25 0 0 0-.182-.135"/>
+            <path d="M8.5 1.866a1 1 0 1 0-1 0V3h-2A4.5 4.5 0 0 0 1 7.5V8a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1v-.5A4.5 4.5 0 0 0 10.5 3h-2zM14 7.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5A3.5 3.5 0 0 1 5.5 4h5A3.5 3.5 0 0 1 14 7.5"/>
+          </svg>
+        </div>
+        <div class="d-flex flex-column w-100">
+          <span class="badge bg-secondary text-start p-3 d-inline-block" style="width: 97%; white-space: normal;">Hola! Soy un bot, ¿en qué puedo ayudarte?</span>
+        </div>
+      `;
+
+    // Agregar el mensaje al chat
+    chatContainer.append(mensajeBienvenida);
+  }
+
+  function boton_enviar(){
+    //Obtenemos el texto del input para poder copiarlo en el mensaje del bot y del usuario, usamos una constante porque no queremos que cambie una vez tenemos el mensaje
+    const mensajeInput = document.getElementById("mensajeInput").value;
+
+    if (mensajeInput === "") {
+      return;
+    }
+
+    //Mensaje del usuario
+    const mensajeUsuario = document.createElement("div");
+    mensajeUsuario.classList.add("row", "justify-content-end", "w-100", "align-items-center", "mb-3", "mensaje-usuario");
+    mensajeUsuario.innerHTML = `
+    <div class="col text-end" style="width: 100%;" >
+                      <span class="badge bg-primary text-start p-3 d-inline-block" style="width: 99%; white-space: normal;">${mensajeInput}</span>
+                    </div>
+                    <div class="col-1 d-flex "> 
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                      </svg>
+                    </div>
+    `;
+
+    //Añadimos el mensaje del usuario al chat
+    chatContainer.appendChild(mensajeUsuario);
+
+    //Petición POST al servidor
+    fetch("http://localhost:5001/enviar_mensaje", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({message: mensajeInput})
+    }).then(response=>response.json()).then(data => {
+      //Creamos el mensaje del bot
+    const respuestaBot = document.createElement("div");
+    respuestaBot.classList.add("d-flex", "flex-row", "justify-content-start", "w-100", "align-items-center", "mb-3", "mensaje-robot");
+    respuestaBot.innerHTML = `
+    <div class="col-1 d-flex justify-content-center"> 
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-robot" viewBox="0 0 16 16">
+            <path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5M3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.6 26.6 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.93.93 0 0 1-.765.935c-.845.147-2.34.346-4.235.346s-3.39-.2-4.235-.346A.93.93 0 0 1 3 9.219zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a25 25 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.71a.25.25 0 0 0 .404.062l.932-.97a25 25 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.98.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.7a.25.25 0 0 0-.182-.135"/>
+            <path d="M8.5 1.866a1 1 0 1 0-1 0V3h-2A4.5 4.5 0 0 0 1 7.5V8a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1v-.5A4.5 4.5 0 0 0 10.5 3h-2zM14 7.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5A3.5 3.5 0 0 1 5.5 4h5A3.5 3.5 0 0 1 14 7.5"/>
+          </svg>
+        </div>
+        <div class="d-flex flex-column w-100">
+          <span class="badge bg-secondary text-start p-3 d-inline-block" style="width: 97%; white-space: normal;">${data.respuesta}</span>
+        </div>
+      `;
+
+      //Añadimos el mensaje del bot al chat
+      chatContainer.appendChild(respuestaBot);
+
+      //Para que al añadir nuevos mensajes se vean estos automaticamente si hay demasiados, es decir si aparece la barra de navegación, queremos que se desplace automáticamente hacia abajo, para eso:
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
+
+    //Limpiamos el input
+    document.getElementById("mensajeInput").value = "";
+  }
+  
+  //DOMContentLoaded es para asegurar que el DOM esté completamente cargado antes de ejecutar el código, es decir, el mensaje de bienvenida no se va a añadir hasta que el contenedor del chat esté disponible, pero no espera a que todos los recursos externos (imagenes, css) se hayan cargado
+  document.addEventListener("DOMContentLoaded", function(){
+    bienvenida();
+    //Cuando el usuario pulse enviar, se añade un mensaje suyo y el bot le contesta
+    document.getElementById("button-addon2").addEventListener("click", boton_enviar);
+    document.addEventListener("keydown", function(event){
+      if (event.key === "Enter") {
+        boton_enviar();
+      }
+    });
+  });
+
+  //añadir el link de visualizar proyecto a cada fila de la tabla de proyectos de la izq
+  document.querySelectorAll(".fila-proyecto").forEach(row=> { 
+    row.addEventListener("click", function (){
+      window.location.href = this.dataset.href; //cambiamos la url actual por la del proyecto
+    });
+  });
+  /*dataset te permite acceder a los atributos que empiezan por data-
+  entonces como llamamos al url del proyecto data-href en su fila de la tabla, podemos acceder con dataset.href
+  es decir, si lo hubieramos llamado data-url, accederiamos con dataset.url*/
+
+  // hacemos que no se pisen los eventos:
+
+  document.querySelectorAll(".delete-btn").forEach(btn => {
+    btn.addEventListener("click", function (clic) {
+      clic.stopPropagation();
+    });
+  });
+  //si se apreta el boton de eliminar, el click no se propaga a toda la fila.
+
+  //mostramos proyectos en pantalla pequeña
+
+  document.getElementById("exampleSelect1").addEventListener("change", function() {
+    const url = this.value;
+    if (url) {
+      window.location.href = url;
+    }
+  });
+  //cuando se cambie a otra opcion, se cambia la url de la ventana a la del proyecto
+  //si se vuelve a la opcion por defecto, no se hace nada porque no tiene valor
+
+
+
+</script>
+{%endblock%}
+
+</html>
+

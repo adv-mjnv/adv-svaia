@@ -1,0 +1,70 @@
+{%extends "layout.html" %}
+{% block head %} 
+  {{super()}}
+    <meta charset="UTF-8">
+    <title>Formulario</title>
+    <link href="bootstrap.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        .centered-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background-color: #f8f9fa;
+        }
+        .form-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .form-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+{% endblock%}
+
+{% block nav %}
+{{super()}}
+{% endblock%}
+
+{% block warning %}
+{%endblock%}
+
+<!--en este codigo permitimos editar un proyecto especifico que se haya seleccionado-->
+
+{%block content%}
+<div class="centered-form">
+    <form method="POST" class="form-container my-5" action="/proyecto/editar/{{p.id}}">
+        <h1 class="form-title">Editar Proyecto {{p.nombre}}</h1>
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" value="{{p.nombre}}" placeholder="Escriba aqu&iacute" required>
+            <label for="descripcion" class="form-label">Descripci&oacuten</label>
+            <input type="text" class="form-control" id="descripcion" name="descripcion" value="{{p.descripcion}}" placeholder="Escriba aqu&iacute">
+        </div>
+        <button type="submit" class="btn btn-success w-100 mb-2">Enviar</button>
+        <a href="/proyecto/{{p.id}}"><button type="button" class="btn btn-success w-100">Cancelar</button></a>
+    </form>
+</div>
+
+<!--en value, ponemos el dato actual, por si no se desea modificar, permanecera igual al enviar otra vez el formulario-->
+
+<script>
+    //creamos un script para mejorar el formato de la fecha introducida, es decir, que se coloquen barras automaticamente
+    document.getElementById('fecha').addEventListener('input', function (e) {
+        let input = e.target.value.replace(/\D/g, ''); // Eliminarlos caracteres que no sean numeros
+        //para agregar la barras automaticamente:
+        if (input.length > 4) input = input.slice(0, 4) + '/' + input.slice(4); 
+        if (input.length > 7) input = input.slice(0, 7) + '/' + input.slice(7); 
+        e.target.value = input;
+    });
+</script>
+{%endblock%}

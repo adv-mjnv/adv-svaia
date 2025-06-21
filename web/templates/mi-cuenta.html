@@ -1,0 +1,58 @@
+{%extends "layout.html" %}
+{% block head %} 
+  {{super()}}
+    <meta charset="UTF-8">
+    <title>Mi cuenta</title>
+    <link href="bootstrap.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        .centered-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background-color: white;
+        }
+        .contenedor {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+        }
+        .titulo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+{% endblock%}
+
+{% block nav %}
+{{super()}}
+{% endblock%}
+
+{% block warning %} <!--quitamos el warning-->
+{%endblock%}
+
+<!--en este codigo mostramos los datos del proyecto-->
+
+{%block content%}
+<div class="centered-form my-3">
+<div id="proyecto" class="contenedor my-4 mx-5">
+    <div id="nombre" class="titulo"><h1>Datos del usuario {{u.username}}</h1></div>
+    <div class="my-4"> <p>Nombre: {{u.nombre}}</p></div>
+    <div class="my-4"> <p>Apellidos: {{u.apellidos}}</p></div>
+    <div class="my-4"> <p>Correo Electr&oacutenico: {{u.correo}}</p></div>
+    <div class="my-4"> <p>Roles: {{u.roles}}</p></div>
+</div>
+</div>
+
+<p class="centered-form mt-2 mb-3">
+    <a href="/usuarios/editar/{{u.id}}" class="btn btn-success me-2">Editar Mis Datos</a>
+    <a href="/logout" class="btn btn-danger me-2">Cerrar Sesi&oacuten</a>
+</p>
+{%endblock%}

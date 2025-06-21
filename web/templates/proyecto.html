@@ -1,0 +1,101 @@
+{%extends "layout.html" %}
+{% block head %} 
+  {{super()}}
+    <meta charset="UTF-8">
+    <title>Proyecto {{p.nombre}}</title>
+    <link href="bootstrap.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        .centered-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background-color: #f8f9fa;
+        }
+        .contenedor {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+        }
+        .titulo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+{% endblock%}
+
+{% block nav %}
+{{super()}}
+{% endblock%}
+
+{% block warning %} <!--quitamos el warning-->
+{%endblock%}
+
+<!--en este codigo mostramos los datos del proyecto-->
+
+{%block content%}
+<div class="centered-form">
+<div id="proyecto" class="contenedor my-5 mx-5">
+    <div id="nombre" class="titulo"><h1>Datos del proyecto {{p.nombre}}</h1></div>
+    <div class="my-4"> <span>Descripci&oacuten: {{p.descripcion}}</span>
+    <p>Fecha de creaci&oacute;n: {{p.fecha}}</p>
+    <p>Fecha de la &uacute;ltima modificaci&oacute;n: {{p.fecha_modificacion}}</p>
+    <p>Propietario: {{propietario}}</p></div>
+
+
+    <div id="nombre" class="titulo"><h1>Dependencias extraidas</h1></div>
+    <ul>
+        {%for dependencia in p.dependencias.split('\n')%}
+            <li>{{dependencia}}</li>
+        {%endfor%}
+    </ul>
+    
+    <div id="nombre" class="titulo"><h1>Criterios de Aceptabilidad</h1></div>
+    <ul>
+        {% for nombre, valor in criterios.items() %}
+            <li>{{ nombre }}: {{ valor }}</li>
+        {% endfor %}
+    </ul>
+
+    {% if p.es_aceptable %}
+    <div class="alert alert-success">
+        Este proyecto cumple los criterios de aceptabilidad.
+    </div>
+    {% else %}
+    <div class="alert alert-danger">
+        Este proyecto <strong>no cumple</strong> los criterios de aceptabilidad.
+        <ul>
+        {% for motivo in p.motivos_rechazo %}
+            <li>{{ motivo }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    
+    <div id="nombre" class="titulo"><h1>Vulnerabilidades extraidas</h1></div>
+    <ul>
+        {%for vulnerabilidad in p.vulnerabilidades.split('\n')%}
+            <li>{{vulnerabilidad or "No se han encontrado vulnerabilidades"}}</li>
+        {%endfor%}
+    </ul>
+
+    <p>
+        <a href="/proyecto/editar/{{p.id}}" class="btn btn-success me-2">Editar</a>
+        <a href="/proyecto/eliminar/{{p.id}}" class="btn btn-success me-2">Eliminar</a>
+        <a href="/proyecto/{{p.id}}/descargar_reporte" class="btn btn-success me-2">Descargar reporte</a>
+        <a href="/chat" class="btn btn-secondary">Cancelar</a>
+    </p>
+
+    <!--estos tres botones llevan a la pagina de editar, eliminar, o de vuelta al chat,
+    su href es la ruta indicada en app.py, e indicamos el id del proyecto actual si es necesario-->
+</div>
+</div>
+{%endblock%}

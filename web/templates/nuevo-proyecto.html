@@ -1,0 +1,107 @@
+{%extends "layout.html" %}
+{% block head %} 
+  {{super()}}
+    <meta charset="UTF-8">
+    <title>Formulario</title>
+    <link href="bootstrap.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        .centered-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background-color: #f8f9fa;
+        }
+        .form-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .form-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+{% endblock%}
+
+{% block nav %}
+{{super()}}
+{% endblock%}
+
+{% block warning %}
+{%endblock%}
+
+
+<!--en este codigo creamos un nuevo proyecto, se le ofrece un formulario al usuario para introducir los datos del proyecto-->
+
+{%block content%}
+<div class="centered-form">
+    <form method="POST" enctype="multipart/form-data" class="form-container my-5" action="/proyecto_nuevo">
+    <h1 class="form-title">Nuevo Proyecto</h1>
+
+    <!--datos basicos -->
+     <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Escriba aqu&iacute" required>
+            <label for="descripcion" class="form-label">Descripci&oacuten</label>
+            <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="Escriba aqu&iacute">
+        </div>
+
+    <!--CRITERIOS DE ACEPTABILIDAD-->
+<div class="mb-3">
+    <label class="form-label">Criterios de aceptabilidad:</label>
+
+    <!-- Total de vulnerabilidades -->
+    <div class="form-check mb-1">
+        <input class="form-check-input" type="checkbox" id="crit_total_check" name="criterio_total_check">
+        <label class="form-check-label" for="crit_total_check">M&aacute;ximo total de vulnerabilidades</label>
+        <input type="number" class="form-control mt-1" name="criterio_total_valor" min="0" placeholder="Ej: 10">
+    </div>
+
+    <!-- Solucionabilidad -->
+    <div class="form-check mb-1">
+        <input class="form-check-input" type="checkbox" id="crit_sol_check" name="criterio_sol_check">
+        <label class="form-check-label" for="crit_sol_check">Porcentaje m&iacute;nimo de vulnerabilidades solucionables</label>
+        <input type="number" class="form-control mt-1" name="criterio_sol_valor" min="0" max="100" placeholder="Ej: 80%">
+    </div>
+
+    <!-- Nivel máximo -->
+    <div class="form-check mb-1">
+        <input class="form-check-input" type="checkbox" id="crit_nivel_check" name="criterio_nivel_check">
+        <label class="form-check-label" for="crit_nivel_check">Nivel máximo de vulnerabilidades</label>
+        <input type="number" class="form-control mt-1" name="criterio_nivel_valor" min="0" max="10" placeholder="Ej: 5 (CVSS)">
+    </div>
+
+    <!-- Cálculo combinado -->
+    <div class="form-check mb-1">
+        <input class="form-check-input" type="checkbox" id="crit_combo_check" name="criterio_combo_check">
+        <label class="form-check-label" for="crit_combo_check">Cálculo combinado (peso total)</label>
+        <input type="number" class="form-control mt-1" name="criterio_combo_valor" min="0" placeholder="Ej: 25">
+    </div>
+</div>
+
+
+    <!-- Dependencias -->
+    <div class="mb-3">
+        <label for="dependencias" class="form-label">Dependencias (lenguaje natural)</label>
+        <textarea class="form-control" name="dependencias_natural" rows="3" placeholder="Describe las dependencias de tu sistema"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="archivo_dependencias" class="form-label">Dependencias (archivo)</label>
+        <input class="form-control" type="file" name="archivo_dependencias" accept=".txt,.xml,.json,.yml">
+    </div>
+
+    <button type="submit" class="btn btn-success w-100 mb-2">Enviar</button>
+    <a href="/chat"><button type="button" class="btn btn-success w-100">Cancelar</button></a>
+</form>
+</div>
+
+{%endblock%}

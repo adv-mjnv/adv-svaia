@@ -1,0 +1,59 @@
+{%extends "layout.html" %}
+{% block head %} 
+  {{super()}}
+    <meta charset="UTF-8">
+    <title>Usuarios</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        .contenedor {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+    </style>
+{% endblock%}
+
+{% block nav %}
+{{super()}}
+{% endblock%}
+
+{% block warning %} <!--quitamos el warning-->
+{%endblock%}
+
+<!--en este codigo mostramos la lista de usuarios-->
+
+{%block content%}
+<h1 class="m-3">Listado de Usuarios</h1>
+<div class="m-3">
+<table class="table d-table contenedor">
+    <tr>
+      <th scope="col" style="border-bottom: 1px solid #d3d3d3;">Username</th> 
+      <th scope="col" style="border-bottom: 1px solid #d3d3d3;">Nombre</th> 
+      <th scope="col" style="border-bottom: 1px solid #d3d3d3;">Apellidos</th> 
+      <th scope="col" style="border-bottom: 1px solid #d3d3d3;">Correo</th> 
+      <th scope="col" style="border-bottom: 1px solid #d3d3d3;">Roles</th>
+      <th scope="col" style="border-bottom: 1px solid #d3d3d3;">Opciones</th> 
+    </tr>
+    
+    {% for u in usuarios %} 
+    <tr class="fila-usuario">
+      <td scope="row" style="border-bottom: 1px solid #d3d3d3;">{{u.username}}</td>
+      <td scope="row" style="border-bottom: 1px solid #d3d3d3;">{{u.nombre}}</td>
+      <td scope="row" style="border-bottom: 1px solid #d3d3d3;">{{u.apellidos}}</td>
+      <td scope="row" style="border-bottom: 1px solid #d3d3d3;">{{u.correo}}</td>
+      <td scope="row" style="border-bottom: 1px solid #d3d3d3;">{{u.roles}}</td>
+      <td scope="row" style="border-bottom: 1px solid #d3d3d3;">
+        <a href="/usuarios/editar/{{u.id}}" class="btn btn-success me-2">Editar</a>
+        <a href="/usuarios/eliminar/{{u.id}}" class="btn btn-danger me-2">Eliminar</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table> 
+</div>
+  <a href="/usuarios/nuevo" class="btn btn-success m-3">Nuevo Usuario</a>
+
+{%endblock%}
